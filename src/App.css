@@ -2,14 +2,12 @@
   background-color: #282c34;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: 1em;
   color: white;
 }
 
 h1 {
-  margin: 12px;
+  margin: 9px 15px;
 }
 
 .App-link {
@@ -17,5 +15,13 @@ h1 {
 }
 
 .form-box {
-  margin: 15px;
+  margin: 15px 25px;
+}
+
+.narrow-text-field {
+  width: 120px;
+}
+
+.button-wrap {
+  margin: 45px 0px;
 }
