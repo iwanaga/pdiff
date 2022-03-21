@@ -1,6 +1,6 @@
 import './App.css';
 import { GoDiff } from 'react-icons/go';
-import { AppBar, Autocomplete, createFilterOptions, Grid, TextField, Toolbar, Typography } from '@mui/material';
+import { AppBar, Autocomplete, createFilterOptions, Stack, TextField, Toolbar, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
       </AppBar>
 
       <div className="form-box">
-        <div className="form-text">
+        <Stack spacing={1} sx={{width: 400}}>
           <Autocomplete
             options={options}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.accountName }
@@ -54,7 +54,7 @@ function App() {
             label="Account Name"
             required
             className="wide-text-field"
-            renderInput={(params) => <TextField {...params} label="Account Name" />}
+            renderInput={(params) => <TextField {...params} label="Account Name" variant="standard" />}
             isOptionEqualToValue={(option, value) => option.accountName }
             onChange={(event, newValue) => {
               setOptions(newValue ? [newValue.accountName, ...options] : options);
@@ -64,10 +64,9 @@ function App() {
               setAccountName(newInputValue);
             }}
           />
-        </div>
 
-        <div className="form-text">
           <TextField
+            variant="standard"
             value={accountSwitchKey}
             onChange={(event) => { if (event.target) { setAccountSwitchKey(event.target.value) } }}
             label="Account Switch Key"
@@ -75,7 +74,7 @@ function App() {
             className="wide-text-field"
             disabled
           />
-        </div>
+        </Stack>
       </div>
     </div>
   );
