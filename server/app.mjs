@@ -1,9 +1,9 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import AccountSwitchKey from './api/AccountSwitchKey.js'
-import Property from './api/SearchProperty.js';
-import getPropertyRuleTree from './api/GetRuleTree.js';
+import AccountSwitchKey from './api/AccountSwitchKey.mjs'
+import Property from './api/SearchProperty.mjs';
+import getPropertyRuleTree from './api/GetRuleTree.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
