@@ -41,6 +41,62 @@ function App() {
   const [before, setBefore] = useState('');
   const [after,  setAfter ] = useState('');
 
+  // getDiff
+  const getDiff = async () => {
+    console.log(propertyHostname);
+    let response = await fetch(`/api/papi/search-properties?switchKey=${accountSwitchKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      body: JSON.stringify({hostname: propertyHostname})
+    });
+    let properties = await response.json();
+    if (properties.versions.items.length === 0) { console.log('Not matched'); }
+
+    console.log(properties.versions.items[0].contractId);
+    console.log(properties.versions.items[0].groupId);
+    console.log(properties.versions.items[0].propertyId);
+
+    response = await fetch(`/api/papi/get-property-rule-tree?switchKey=${accountSwitchKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      body: JSON.stringify({
+        propertyId: properties.versions.items[0].propertyId,
+        contractId: properties.versions.items[0].contractId,
+        groupId: properties.versions.items[0].groupId,
+        propertyVersion: versionBefore
+      })
+    });
+    let ruleTreeBefore = await response.json();
+    console.log(ruleTreeBefore);
+    // TODO: error handling
+    setBefore(ruleTreeBefore);
+
+    response = await fetch(`/api/papi/get-property-rule-tree?switchKey=${accountSwitchKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      body: JSON.stringify({
+        propertyId: properties.versions.items[0].propertyId,
+        contractId: properties.versions.items[0].contractId,
+        groupId: properties.versions.items[0].groupId,
+        propertyVersion: versionAfter
+      })
+    });
+    let ruleTreeAfter = await response.json();
+    console.log(ruleTreeAfter);
+    // TODO: error handling
+    setAfter(ruleTreeAfter);
+  };
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -108,14 +164,18 @@ function App() {
         </Stack>
 
         <div className="button-wrap">
-          <Button variant="contained" startIcon={<FiDownloadCloud />}>Show diff</Button>
+          <Button onClick={getDiff} variant="contained" startIcon={<FiDownloadCloud />}>Show diff</Button>
         </div>
       </div>
 
       {before && after ?
+      <div>
       <Toolbar>
         <Typography variant="h5" sx={{ flexGrow: 1 }}><GoGitPullRequest /> &nbsp;diff</Typography>
       </Toolbar>
+      <pre>{JSON.stringify(before, null, 2)}</pre>
+      <pre>{JSON.stringify(after, null, 2)}</pre>
+      </div>
       : <></>}
     </div>
   );
