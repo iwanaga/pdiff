@@ -4,9 +4,9 @@ diff tool for Akamai property rule tree
 ## How to Setup
 Download and the docker image
 ```
-docker pull iwanaga/atc-ninja:latest
-docker run -p 9000:9000 -v /Users/`whoami`/.edgerc:/root/.edgerc -it --rm --name atc-ninja -d atc-ninja
-docker logs -f iwanaga/atc-ninja
+docker pull iwanaga/pdiff:latest
+docker run -p 9000:9000 -v /Users/`whoami`/.edgerc:/root/.edgerc -it --rm --name pdiff -d pdiff
+docker logs -f iwanaga/pdiff
 ```
 
 Open your browser and access to localhost:9000
