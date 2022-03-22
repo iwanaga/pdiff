@@ -5,7 +5,6 @@ import { Autocomplete, Button, createFilterOptions, Stack, TextField, Toolbar, T
 import { FiDownloadCloud } from 'react-icons/fi';
 import ReactDiffViewer from 'react-diff-viewer';
 import { useEffect, useState } from 'react';
-import { lineHeight } from '@mui/system';
 
 function App() {
 
