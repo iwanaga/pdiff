@@ -5,6 +5,7 @@ import { Autocomplete, Button, createFilterOptions, Stack, TextField, Toolbar, T
 import { FiDownloadCloud } from 'react-icons/fi';
 import ReactDiffViewer from 'react-diff-viewer';
 import { useEffect, useState } from 'react';
+import { lineHeight } from '@mui/system';
 
 function App() {
 
@@ -103,7 +104,6 @@ function App() {
       <header className="App-header">
         <h1>&nbsp;<ImFilesEmpty />&nbsp; pdiff</h1>
       </header>
-
       <div className="form-box">
         <Stack spacing={2} sx={{width: 400}}>
           <Autocomplete
@@ -174,10 +174,15 @@ function App() {
         <Toolbar>
           <Typography variant="h5" sx={{ flexGrow: 1 }}><GoGitPullRequest /> &nbsp;diff</Typography>
         </Toolbar>
-        <ReactDiffViewer
-          oldValue={JSON.stringify(before, null, 2)}
-          newValue={JSON.stringify(after,  null, 2)}
-        />
+        <div style={{fontSize: '12px'}}>
+          <ReactDiffViewer
+            oldValue={JSON.stringify(before, null, 2)}
+            newValue={JSON.stringify(after,  null, 2)}
+            compareMethod="diffWords"
+            leftTitle={`v${versionBefore}`}
+            rightTitle={`v${versionAfter}`}
+          />
+        </div>
       </div>
       : <></>}
     </div>
