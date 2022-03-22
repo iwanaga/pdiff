@@ -1,11 +1,11 @@
 import './App.css';
 import { ImFilesEmpty } from 'react-icons/im';
 import { GoGitPullRequest } from 'react-icons/go'
-import { Autocomplete, Button, createFilterOptions, Stack, TextField, Toolbar, Typography } from '@mui/material';
+import { FaExclamationTriangle } from 'react-icons/fa';
+import { Autocomplete, Button, createFilterOptions, Stack, TextField, Toolbar, Typography, Stepper, StepLabel, Step, StepContent } from '@mui/material';
 import { FiDownloadCloud } from 'react-icons/fi';
 import ReactDiffViewer from 'react-diff-viewer';
 import { useEffect, useState } from 'react';
-import { lineHeight } from '@mui/system';
 
 function App() {
 
@@ -39,13 +39,34 @@ function App() {
   const [versionBefore, setVersionBefore] = useState('');
   const [versionAfter,  setVersionAfter ] = useState('');
 
+  // fetch status
+  const [activeStep, setActiveStep] = useState(0);
+  const [apiError, setApiError] = useState('');
+
+  function getSteps() {
+    return [
+      'Enter the form and click the button above',
+      `API: Searching property by property hostname.`,
+      `API: Fetching rule tree, old version.`,
+      `API: Fetching rule tree, new version.`,
+      'See diff below'
+    ];
+  }
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   // diff
   const [before, setBefore] = useState('');
   const [after,  setAfter ] = useState('');
 
   // getDiff
   const getDiff = async () => {
-    console.log(propertyHostname);
+    handleReset();
+
+    setActiveStep(1);
+    console.log(`Search ${propertyHostname}`);
     let response = await fetch(`/api/papi/search-properties?switchKey=${accountSwitchKey}`, {
       method: 'POST',
       headers: {
@@ -54,13 +75,26 @@ function App() {
       redirect: 'follow',
       body: JSON.stringify({hostname: propertyHostname})
     });
+    console.log(response);
+
     let properties = await response.json();
-    if (properties.versions.items.length === 0) { console.log('Not matched'); }
+    console.log(properties);
+
+    if (response.status > 400) {
+      setApiError(properties.detail);
+      return;
+    }
+    if (properties.versions.items.length === 0) {
+      setApiError('Property not found. Please check account name.');
+      return;
+    }
 
     console.log(properties.versions.items[0].contractId);
     console.log(properties.versions.items[0].groupId);
     console.log(properties.versions.items[0].propertyId);
 
+    setActiveStep(2);
+    console.log(`Fetch v${versionBefore}`);
     response = await fetch(`/api/papi/get-property-rule-tree?switchKey=${accountSwitchKey}`, {
       method: 'POST',
       headers: {
@@ -74,11 +108,19 @@ function App() {
         propertyVersion: versionBefore
       })
     });
+    console.log(response);
+
     let ruleTreeBefore = await response.json();
     console.log(ruleTreeBefore);
-    // TODO: error handling
+
+    if (response.status > 400) {
+      setApiError(ruleTreeBefore.detail);
+      return;
+    }
     setBefore(ruleTreeBefore);
 
+    setActiveStep(3);
+    console.log(`Fetch v${versionAfter}`);
     response = await fetch(`/api/papi/get-property-rule-tree?switchKey=${accountSwitchKey}`, {
       method: 'POST',
       headers: {
@@ -92,10 +134,17 @@ function App() {
         propertyVersion: versionAfter
       })
     });
+    console.log(response);
+
     let ruleTreeAfter = await response.json();
     console.log(ruleTreeAfter);
-    // TODO: error handling
+    if (response.status > 400) {
+      setApiError(ruleTreeAfter.detail);
+      return;
+    }
     setAfter(ruleTreeAfter);
+
+    setActiveStep(4);
   };
 
 
@@ -167,6 +216,20 @@ function App() {
         <div className="button-wrap">
           <Button onClick={getDiff} variant="contained" startIcon={<FiDownloadCloud />}>Show diff</Button>
         </div>
+      </div>
+
+      <div className="form-box">
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {getSteps().map((label, index) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+              <StepContent>{index === 1 && apiError !== '' ?
+                <div style={{fontSize: "14px"}}>
+                  <div style={{color: "#c2185b", fontWeight:"bold"}}><FaExclamationTriangle className="button-icon" />{apiError}</div>
+                </div> : ''}</StepContent>
+            </Step>
+          ))}
+        </Stepper>
       </div>
 
       {before && after ?
