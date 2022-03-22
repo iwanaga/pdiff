@@ -83,6 +83,6 @@ docker logs -f pdiff
 
 docker stop pdiff
 
-docker tag atc-ninja iwanaga/pdiff
+docker tag pdiff iwanaga/pdiff
 docker push iwanaga/pdiff:latest
 ```
