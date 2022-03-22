@@ -3,6 +3,7 @@ import { ImFilesEmpty } from 'react-icons/im';
 import { GoGitPullRequest } from 'react-icons/go'
 import { Autocomplete, Button, createFilterOptions, Stack, TextField, Toolbar, Typography } from '@mui/material';
 import { FiDownloadCloud } from 'react-icons/fi';
+import ReactDiffViewer from 'react-diff-viewer';
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -170,11 +171,13 @@ function App() {
 
       {before && after ?
       <div>
-      <Toolbar>
-        <Typography variant="h5" sx={{ flexGrow: 1 }}><GoGitPullRequest /> &nbsp;diff</Typography>
-      </Toolbar>
-      <pre>{JSON.stringify(before, null, 2)}</pre>
-      <pre>{JSON.stringify(after, null, 2)}</pre>
+        <Toolbar>
+          <Typography variant="h5" sx={{ flexGrow: 1 }}><GoGitPullRequest /> &nbsp;diff</Typography>
+        </Toolbar>
+        <ReactDiffViewer
+          oldValue={JSON.stringify(before, null, 2)}
+          newValue={JSON.stringify(after,  null, 2)}
+        />
       </div>
       : <></>}
     </div>
