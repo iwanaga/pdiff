@@ -73,3 +73,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Docker
+```
+docker build -t pdiff .
+
+docker run -p 9000:9000 -v ~/.edgerc:/root/.edgerc -it --rm --name pdiff -d pdiff
+docker logs -f pdiff
+
+docker stop pdiff
+
+docker tag atc-ninja iwanaga/pdiff
+docker push iwanaga/pdiff:latest
+```
