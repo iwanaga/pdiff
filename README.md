@@ -1,6 +1,12 @@
 # pdiff
 diff tool for Akamai property rule tree
 
+## Setup
+
+```
+npm install --legacy-peer-deps
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
