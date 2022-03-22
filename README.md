@@ -84,5 +84,7 @@ docker logs -f pdiff
 docker stop pdiff
 
 docker tag pdiff iwanaga/pdiff
+
+docker login
 docker push iwanaga/pdiff:latest
 ```
