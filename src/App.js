@@ -9,6 +9,53 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
+  const diffStyles = {
+    variables: {
+      dark: {
+        diffViewerTitleColor: '#ccc',
+        diffViewerTitleBackground: '#161b22',
+        codeFoldGutterBackground: 'rgba(56,139,253,0.4)',
+        codeFoldContentColor: '#aaa',
+        codeFoldBackground: 'rgba(56,139,253,0.15)',
+        gutterBackground: '#0d1117',
+        gutterColor: '#484f58',
+        diffViewerBackground: '#0d1117',
+        gutterBackgroundDark: '#0d1117',
+        removedGutterBackground: 'rgba(248,81,73,0.3)',
+        removedGutterColor: '#c9d1d9',
+        removedBackground: 'rgba(248,81,73,0.15)',
+        wordRemovedBackground: 'rgba(248,81,73,0.4)',
+        addedGutterBackground: 'rgba(63,185,80,0.3)',
+        addedGutterColor: '#c9d1d9',
+        addedBackground: 'rgba(46,160,67,0.15)',
+        wordAddedBackground: 'rgba(46,160,67,0.4)',
+        emptyLineBackground: '#0d1117'
+      }
+    },
+    line: {
+      pre: {
+        lineHeight: '1.5em',
+        fontSize: '12px',
+        fontWeight: '500',
+        fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace'
+      }
+    },
+    wordDiff: {
+      padding: 1
+    },
+    gutter: {
+      pre: {
+        opacity: 100
+      }
+    },
+    codeFold: {
+      fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace',
+      fontSize: '12px',
+      lineHeight: '1.2em',
+      height: 'auto'
+    }
+  };
+
   // Autocomplete Account Switch Key
   const [accountName, setAccountName] = useState('');
   const [options, setOptions] = useState([]);
@@ -248,6 +295,8 @@ function App() {
             newValue={JSON.stringify(after,  null, 2)}
             compareMethod="diffWords"
             useDarkTheme="true"
+            splitView={false}
+            styles={diffStyles}
             leftTitle={`v${versionBefore}`}
             rightTitle={`v${versionAfter}`}
           />
