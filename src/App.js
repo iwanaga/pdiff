@@ -219,7 +219,7 @@ function App() {
         </Stack>
 
         <div className="button-wrap">
-          <Button onClick={getDiff} variant="contained" startIcon={<FiDownloadCloud />}>Show diff</Button>
+          <Button onClick={getDiff} variant="contained" color="secondary" startIcon={<FiDownloadCloud />}>Show diff</Button>
         </div>
       </div>
 

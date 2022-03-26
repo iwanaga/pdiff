@@ -9,7 +9,9 @@ import { ThemeProvider } from '@emotion/react';
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
-    background: { default: '#0d1117' }
+    background: { default: '#0d1117' },
+    primary: { main: "#58a6ff" },
+    secondary: { main: "#238636" }
   }
 });
 
