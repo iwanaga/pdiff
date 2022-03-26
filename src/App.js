@@ -247,6 +247,7 @@ function App() {
             oldValue={JSON.stringify(before, null, 2)}
             newValue={JSON.stringify(after,  null, 2)}
             compareMethod="diffWords"
+            useDarkTheme="true"
             leftTitle={`v${versionBefore}`}
             rightTitle={`v${versionAfter}`}
           />
