@@ -3,7 +3,7 @@ import os from 'os';
 
 const edgeGrid = new EdgeGrid({
   path: `${os.homedir()}/.edgerc`,
-  section: 'test_center'
+  section: 'pdiff'
 });
 
 export const listAccountSwitchKeys = async (accountName) => {
