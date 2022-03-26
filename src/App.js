@@ -164,7 +164,7 @@ function App() {
             value={accountName}
             label="Account Name"
             required
-            renderInput={(params) => <TextField {...params} label="Account Name" variant="standard" />}
+            renderInput={(params) => <TextField {...params} label="Account Name" variant="filled" />}
             isOptionEqualToValue={(option, value) => option.accountName }
             onChange={(event, newValue) => {
               setOptions(newValue ? [newValue.accountName, ...options] : options);
@@ -185,28 +185,33 @@ function App() {
           />
 
           <TextField
-            variant="standard"
+            variant="filled"
             value={propertyHostname}
             onChange={(event) => { if (event.target) { setPropertyHostname(event.target.value) } }}
             label="Property Hostname"
+            placeholder="www.example.com"
             required
           />
 
           <Stack direction="row" spacing={2}>
             <TextField
-              variant="standard"
+              variant="filled"
               value={versionBefore}
               onChange={(event) => { if (event.target) { setVersionBefore(event.target.value) } }}
+              placeholder="1"
+              type="number"
               label="Version From"
               required
               className="narrow-text-field"
             />
 
             <TextField
-              variant="standard"
+              variant="filled"
               value={versionAfter}
               onChange={(event) => { if (event.target) { setVersionAfter(event.target.value) } }}
               label="Version To"
+              placeholder="2"
+              type="number"
               required
               className="narrow-text-field"
             />
