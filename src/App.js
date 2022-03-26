@@ -297,7 +297,7 @@ function App() {
             useDarkTheme="true"
             splitView={false}
             styles={diffStyles}
-            leftTitle={`v${versionBefore}`}
+            leftTitle={`v${versionBefore} -> v${versionAfter}`}
             rightTitle={`v${versionAfter}`}
           />
         </div>
