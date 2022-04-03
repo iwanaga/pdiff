@@ -1,7 +1,7 @@
 import './App.css';
 import { ImFilesEmpty } from 'react-icons/im';
 import { FaExclamationTriangle, FaCopy } from 'react-icons/fa';
-import { Autocomplete, Button, createFilterOptions, Stack, Paper, TextField, Snackbar, Alert, Toolbar, Typography, Stepper, StepLabel, Step, StepContent } from '@mui/material';
+import { Autocomplete, Button, createFilterOptions, Stack, Paper, TextField, Snackbar, Alert, Stepper, StepLabel, Step, StepContent } from '@mui/material';
 import { FiDownloadCloud } from 'react-icons/fi';
 import ReactDiffViewer from 'react-diff-viewer';
 import { useEffect, useState } from 'react';
