@@ -1,4 +1,4 @@
-import EdgeGrid from 'edgegrid';
+import EdgeGrid from 'akamai-edgegrid';
 import os from 'os';
 
 const edgeGrid = new EdgeGrid({
