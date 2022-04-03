@@ -1,8 +1,7 @@
 import './App.css';
 import { ImFilesEmpty } from 'react-icons/im';
-import { GoGitPullRequest } from 'react-icons/go'
-import { FaExclamationTriangle } from 'react-icons/fa';
-import { Autocomplete, Button, createFilterOptions, Stack, TextField, Toolbar, Typography, Stepper, StepLabel, Step, StepContent } from '@mui/material';
+import { FaExclamationTriangle, FaCopy } from 'react-icons/fa';
+import { Autocomplete, Button, createFilterOptions, Stack, Paper, TextField, Snackbar, Alert, Toolbar, Typography, Stepper, StepLabel, Step, StepContent } from '@mui/material';
 import { FiDownloadCloud } from 'react-icons/fi';
 import ReactDiffViewer from 'react-diff-viewer';
 import { useEffect, useState } from 'react';
@@ -56,10 +55,13 @@ function App() {
     }
   };
 
+  // query parameters
+  const params = new URLSearchParams(document.location.search);
+
   // Autocomplete Account Switch Key
-  const [accountName, setAccountName] = useState('');
+  const [accountName, setAccountName] = useState(params.get('accountName') || '');
   const [options, setOptions] = useState([]);
-  const [accountSwitchKey, setAccountSwitchKey] = useState('');
+  const [accountSwitchKey, setAccountSwitchKey] = useState(params.get('accountSwitchKey') || '');
 
   useEffect(() => {
     async function fetchAccountSwitchKeys (){
@@ -82,9 +84,11 @@ function App() {
   });
 
   // Input fields
-  const [propertyHostname, setPropertyHostname] = useState('');
-  const [versionBefore, setVersionBefore] = useState('');
-  const [versionAfter,  setVersionAfter ] = useState('');
+  const [propertyHostname, setPropertyHostname] = useState(params.get('propertyHostname') || '');
+  const [versionBefore, setVersionBefore] = useState(params.get('versionFrom') || '');
+  const [versionAfter,  setVersionAfter ] = useState(params.get('versionTo') || '');
+
+  const [shareURL, setShareURL] = useState('');
 
   // fetch status
   const [activeStep, setActiveStep] = useState(0);
@@ -94,8 +98,8 @@ function App() {
     return [
       'Enter the form and click the button above',
       `API: Searching property by property hostname.`,
-      `API: Fetching rule tree, old version.`,
-      `API: Fetching rule tree, new version.`,
+      `API: Fetching rule tree, old version. (takes 5 seconds)`,
+      `API: Fetching rule tree, new version. (takes 5 seconds)`,
       'See diff below'
     ];
   }
@@ -190,10 +194,15 @@ function App() {
       return;
     }
     setAfter(ruleTreeAfter);
+    setShareURL(`http://localhost:${document.location.port}/?accountName=${accountName}&accountSwitchKey=${accountSwitchKey}&propertyHostname=${propertyHostname}&versionFrom=${versionBefore}&versionTo=${versionAfter}`);
 
     setActiveStep(4);
   };
 
+  const [open, setOpen] = useState(false);
+  const showMessage = () => {
+    setOpen(true);
+  };
 
   return (
     <div className="App">
@@ -286,9 +295,18 @@ function App() {
 
       {before && after ?
       <div>
-        <Toolbar>
-          <Typography variant="h5" sx={{ flexGrow: 1 }}><GoGitPullRequest /> &nbsp;diff</Typography>
-        </Toolbar>
+        <Stack>
+          <Paper
+            style={{padding: '15px', fontSize: '12px', cursor: 'pointer'}}
+            onClick={() => { navigator.clipboard.writeText(shareURL); showMessage();}}>
+            <span style={{fontSize: '15px', fontWeight: '600'}}><FaCopy />&nbsp; Copy URL to clipboard: </span><span style={{color: 'rgb(102, 178, 255)'}}>{shareURL}</span>
+          </Paper>
+        </Stack>
+        <Snackbar open={open} autoHideDuration={1600} onClose={() => { setOpen(false); }}>
+          <Alert onClose={() => { setOpen(false); }} severity="success" sx={{ width: '100%' }}>
+          Copied to clipboad!
+        </Alert>
+      </Snackbar>
         <div style={{fontSize: '12px'}}>
           <ReactDiffViewer
             oldValue={JSON.stringify(before, null, 2)}
